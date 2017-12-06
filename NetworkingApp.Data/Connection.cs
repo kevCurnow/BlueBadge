@@ -12,10 +12,15 @@ namespace NetworkingApp.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class Attendee
+    public partial class Connection
     {
-        public int AttendeeID { get; set; }
-        public string Name { get; set; }
+        public int ConnectionID { get; set; }
+        public string ConnectionName { get; set; }
+        public string Job { get; set; }
+        public string Employer { get; set; }
+        public string Phone { get; set; }
+        public string Email { get; set; }
+        public string Notes { get; set; }
         public int EventID { get; set; }
     
         public virtual Event Event { get; set; }

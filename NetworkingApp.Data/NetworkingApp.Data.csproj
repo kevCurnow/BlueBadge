@@ -49,7 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attendee.cs">
+    <Compile Include="Connection.cs">
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
     <Compile Include="Event.cs">
