@@ -53,5 +53,15 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NetworkingApp.Data\NetworkingApp.Data.csproj">
+      <Project>{47618fbc-f3b7-4c49-9179-e42c98a35464}</Project>
+      <Name>NetworkingApp.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetworkingApp.Models\NetworkingApp.Models.csproj">
+      <Project>{db817cf0-0fcb-435a-82d3-b35c219ed7cb}</Project>
+      <Name>NetworkingApp.Models</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

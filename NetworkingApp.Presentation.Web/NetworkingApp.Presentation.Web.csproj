@@ -275,6 +275,24 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NetworkingApp.Contracts\NetworkingApp.Contracts.csproj">
+      <Project>{a4c47eeb-5c3d-434d-9fe5-b3934d1a1801}</Project>
+      <Name>NetworkingApp.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetworkingApp.Data\NetworkingApp.Data.csproj">
+      <Project>{47618fbc-f3b7-4c49-9179-e42c98a35464}</Project>
+      <Name>NetworkingApp.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetworkingApp.Models\NetworkingApp.Models.csproj">
+      <Project>{db817cf0-0fcb-435a-82d3-b35c219ed7cb}</Project>
+      <Name>NetworkingApp.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetworkingApp.Services\NetworkingApp.Services.csproj">
+      <Project>{8682d3cf-194d-477d-a3ab-b4a8c64865c9}</Project>
+      <Name>NetworkingApp.Services</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
