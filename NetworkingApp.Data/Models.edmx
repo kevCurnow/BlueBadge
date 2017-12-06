@@ -4,13 +4,18 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="NetworkingDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Attendee">
+    <Schema Namespace="NetworkingDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Connection">
           <Key>
-            <PropertyRef Name="AttendeeID" />
+            <PropertyRef Name="ConnectionID" />
           </Key>
-          <Property Name="AttendeeID" Type="int" Nullable="false" />
-          <Property Name="Name" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="ConnectionID" Type="int" Nullable="false" />
+          <Property Name="ConnectionName" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="Job" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="Employer" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="Phone" Type="nchar" MaxLength="30" Nullable="false" />
+          <Property Name="Email" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="Notes" Type="nchar" MaxLength="1000" Nullable="false" />
           <Property Name="EventID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Event">
@@ -35,12 +40,12 @@
         </EntityType>
         <Association Name="EventID">
           <End Role="Event" Type="Self.Event" Multiplicity="1" />
-          <End Role="Attendee" Type="Self.Attendee" Multiplicity="*" />
+          <End Role="Connection" Type="Self.Connection" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Event">
               <PropertyRef Name="EventID" />
             </Principal>
-            <Dependent Role="Attendee">
+            <Dependent Role="Connection">
               <PropertyRef Name="EventID" />
             </Dependent>
           </ReferentialConstraint>
@@ -58,32 +63,22 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="NetworkingDBModelStoreContainer">
-          <EntitySet Name="Attendee" EntityType="Self.Attendee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Connection" EntityType="Self.Connection" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Event" EntityType="Self.Event" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="EventID" Association="Self.EventID">
             <End Role="Event" EntitySet="Event" />
-            <End Role="Attendee" EntitySet="Attendee" />
+            <End Role="Connection" EntitySet="Connection" />
           </AssociationSet>
           <AssociationSet Name="UserID" Association="Self.UserID">
             <End Role="User" EntitySet="User" />
             <End Role="Event" EntitySet="Event" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="NetworkingDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Attendee">
-          <Key>
-            <PropertyRef Name="AttendeeID" />
-          </Key>
-          <Property Name="AttendeeID" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="EventID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Event" Relationship="Self.EventID" FromRole="Attendee" ToRole="Event" />
-        </EntityType>
         <EntityType Name="Event">
           <Key>
             <PropertyRef Name="EventID" />
@@ -93,8 +88,8 @@
           <Property Name="Date" Type="DateTimeOffset" Nullable="false" Precision="7" />
           <Property Name="Location" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Attendees" Relationship="Self.EventID" FromRole="Event" ToRole="Attendee" />
           <NavigationProperty Name="User" Relationship="Self.UserID" FromRole="Event" ToRole="User" />
+          <NavigationProperty Name="Connections" Relationship="NetworkingDBModel.EventID1" FromRole="Event" ToRole="Connection" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -107,18 +102,6 @@
           <Property Name="LastName" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Events" Relationship="Self.UserID" FromRole="User" ToRole="Event" />
         </EntityType>
-        <Association Name="EventID">
-          <End Role="Event" Type="Self.Event" Multiplicity="1" />
-          <End Role="Attendee" Type="Self.Attendee" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Event">
-              <PropertyRef Name="EventID" />
-            </Principal>
-            <Dependent Role="Attendee">
-              <PropertyRef Name="EventID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="UserID">
           <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="Event" Type="Self.Event" Multiplicity="*" />
@@ -132,33 +115,50 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="NetworkingDBEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Attendees" EntityType="Self.Attendee" />
           <EntitySet Name="Events" EntityType="Self.Event" />
           <EntitySet Name="Users" EntityType="Self.User" />
-          <AssociationSet Name="EventID" Association="Self.EventID">
-            <End Role="Event" EntitySet="Events" />
-            <End Role="Attendee" EntitySet="Attendees" />
-          </AssociationSet>
           <AssociationSet Name="UserID" Association="Self.UserID">
             <End Role="User" EntitySet="Users" />
             <End Role="Event" EntitySet="Events" />
           </AssociationSet>
+          <EntitySet Name="Connections" EntityType="NetworkingDBModel.Connection" />
+          <AssociationSet Name="EventID1" Association="NetworkingDBModel.EventID1">
+            <End Role="Event" EntitySet="Events" />
+            <End Role="Connection" EntitySet="Connections" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Connection">
+          <Key>
+            <PropertyRef Name="ConnectionID" />
+          </Key>
+          <Property Name="ConnectionID" Type="Int32" Nullable="false" />
+          <Property Name="ConnectionName" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Job" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Employer" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Phone" Type="String" Nullable="false" MaxLength="30" FixedLength="true" Unicode="true" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Notes" Type="String" Nullable="false" MaxLength="1000" FixedLength="true" Unicode="true" />
+          <Property Name="EventID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Event" Relationship="NetworkingDBModel.EventID1" FromRole="Connection" ToRole="Event" />
+        </EntityType>
+        <Association Name="EventID1">
+          <End Type="NetworkingDBModel.Event" Role="Event" Multiplicity="1" />
+          <End Type="NetworkingDBModel.Connection" Role="Connection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Event">
+              <PropertyRef Name="EventID" />
+            </Principal>
+            <Dependent Role="Connection">
+              <PropertyRef Name="EventID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="NetworkingDBModelStoreContainer" CdmEntityContainer="NetworkingDBEntities">
-          <EntitySetMapping Name="Attendees">
-            <EntityTypeMapping TypeName="NetworkingDBModel.Attendee">
-              <MappingFragment StoreEntitySet="Attendee">
-                <ScalarProperty Name="AttendeeID" ColumnName="AttendeeID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="EventID" ColumnName="EventID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Events">
             <EntityTypeMapping TypeName="NetworkingDBModel.Event">
               <MappingFragment StoreEntitySet="Event">
@@ -178,6 +178,20 @@
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Connections">
+            <EntityTypeMapping TypeName="NetworkingDBModel.Connection">
+              <MappingFragment StoreEntitySet="Connection">
+                <ScalarProperty Name="EventID" ColumnName="EventID" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Employer" ColumnName="Employer" />
+                <ScalarProperty Name="Job" ColumnName="Job" />
+                <ScalarProperty Name="ConnectionName" ColumnName="ConnectionName" />
+                <ScalarProperty Name="ConnectionID" ColumnName="ConnectionID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

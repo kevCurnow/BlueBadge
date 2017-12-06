@@ -5,11 +5,11 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="1f1cdafc976b42039da88fa3c329b6f1" Name="Diagram1">
-        <EntityTypeShape EntityType="NetworkingDBModel.Attendee" Width="1.5" PointX="5.25" PointY="1.25" IsExpanded="true" />
         <EntityTypeShape EntityType="NetworkingDBModel.Event" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="NetworkingDBModel.User" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
-        <AssociationConnector Association="NetworkingDBModel.EventID" ManuallyRouted="false" />
         <AssociationConnector Association="NetworkingDBModel.UserID" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="NetworkingDBModel.Connection" Width="1.5" PointX="6.125" PointY="0.875" />
+        <AssociationConnector Association="NetworkingDBModel.EventID1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
