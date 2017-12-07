@@ -47,6 +47,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConnectionModels\ConnectionCreateModel.cs" />
+    <Compile Include="ConnectionModels\ConnectionDetailModel.cs" />
+    <Compile Include="ConnectionModels\ConnectionEditModel.cs" />
+    <Compile Include="ConnectionModels\ConnectionListItemModel.cs" />
+    <Compile Include="EventModels\EventCreateModel.cs" />
+    <Compile Include="EventModels\EventDetailModel.cs" />
+    <Compile Include="EventModels\EventEditModel.cs" />
+    <Compile Include="EventModels\EventListItemModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -54,8 +62,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ConnectionModels\" />
-    <Folder Include="EventModels\" />
     <Folder Include="UserModels\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
